@@ -3,7 +3,6 @@ const bcryptjs = require('bcryptjs');
 
 const User = require('../models/User');
 
-
 const getUsers = (req, res = response) => {
     res.json('get users');
 }
@@ -17,12 +16,27 @@ const saveUser = async (req, res = response) => {
     user.password = bcryptjs.hashSync(password, salt);
 
     await user.save();
-    res.json(user)
+    res.json({ user })
 
 }
 
-const updateUser = (req, res = response) => {
-    res.json('get users');
+const updateUser = async (req, res = response) => {
+
+    const { id } = req.params;
+    const { _id, password, google, email, ...rest } = req.body;
+
+    if (password) {
+        const salt = bcryptjs.genSaltSync();
+        rest.password = bcryptjs.hashSync(password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate(id, rest);
+
+    res.json({
+        message: 'El usuario se actualizó con exito',
+        user
+    })
+
 }
 
 const deleteUser = (req, res = response) => {
