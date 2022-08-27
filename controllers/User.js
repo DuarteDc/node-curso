@@ -49,8 +49,8 @@ const updateUser = async (req, res = response) => {
 
     res.json({
         message: 'El usuario se actualizó con exito',
-        user
-    })
+        user,
+    });
 
 }
 
