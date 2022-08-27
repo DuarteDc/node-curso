@@ -3,8 +3,23 @@ const bcryptjs = require('bcryptjs');
 
 const User = require('../models/User');
 
-const getUsers = (req, res = response) => {
-    res.json('get users');
+const getUsers = async (req, res = response) => {
+
+    const { limit = 5, init = 0 } = req.query;
+
+    // const users = await User.find({ status: true }).skip(+init).limit(+limit);
+    // const totalDocuments = await User.countDocuments({ status: true });
+
+    const [totalDocuments, users] = await Promise.all([
+        User.countDocuments({ status: true }),
+        User.find({ status: true }).skip(+init).limit(+limit),
+    ]);
+
+    res.json({
+        totalDocuments,
+        users,
+    });
+
 }
 
 const saveUser = async (req, res = response) => {
@@ -39,8 +54,20 @@ const updateUser = async (req, res = response) => {
 
 }
 
-const deleteUser = (req, res = response) => {
-    res.json('get users');
+const deleteUser = async (req, res = response) => {
+
+    const { id } = req.params;
+
+    //delete user 
+    // const user = await User.findByIdAndDelete(id);
+
+    const user = await User.findByIdAndUpdate(id, { status: false });
+
+    res.json({
+        message: 'El usuario se elimino con exito',
+        user
+    });
+
 }
 
 module.exports = {
