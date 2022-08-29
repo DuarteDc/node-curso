@@ -62,10 +62,12 @@ const deleteUser = async (req, res = response) => {
     // const user = await User.findByIdAndDelete(id);
 
     const user = await User.findByIdAndUpdate(id, { status: false });
+    const userAuthenticate = req.user;
 
     res.json({
         message: 'El usuario se elimino con exito',
-        user
+        user,
+        userAuthenticate
     });
 
 }

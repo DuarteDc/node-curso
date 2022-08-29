@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Server Duarte</h1>
+      <div id="g_id_onload"
+         data-client_id="31469844821-jn8v1n02ua5c01av93qnka2dlbpj3e6e.apps.googleusercontent.com"
+         data-auto_prompt="false"
+         data-callback="handleCredentialResponse"
+         >
+      </div>
+      <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+      </div>
+      <script src="https://accounts.google.com/gsi/client" async defer></script>
+      <script>
+        function handleCredentialResponse(response) {
+
+            const body = { id_token: response.credential };
+            fetch('http://localhost:3000/api/auth/login-google',{
+               method: 'POST',
+               headers: {
+                  'Content-Type' : 'application/json'
+               },
+               body: JSON.stringify(body),
+            }).then(res => res.json())
+               .then(res => console.log(res))
+               .catch(console.warn);
+
+
+        }
+      </script>
+</body>
+</html>
