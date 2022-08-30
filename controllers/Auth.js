@@ -46,11 +46,15 @@ const loginWithGoogle = async (req, res = response) => {
         let user = await User.findOne({ email });
 
         if (!user) {
-            const data = { name, email, password: '123456', image: picture, google: true };
-            user = new User(data);
-            await user.save();
-        }
 
+            const data = { name, email, password: 'password', image: picture, google: true, rol: 'user' };
+            user = await new User(data);
+            const salt = bcryptjs.genSaltSync();
+            user.password = bcryptjs.hashSync('password', salt);
+            await user.save();
+
+        }
+        
         if (!user.status) return res.status(400).json({ message: 'El usuario no es valido' });
 
         const token = await generateJWT(user._id);
