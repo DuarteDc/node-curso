@@ -54,7 +54,33 @@ const createCategory = async (req, res = response) => {
 
 }
 
-const updateCategory = async () => {
+const updateCategory = async (req, res = response) => {
+
+    const { id } = req.params;
+    const { status, user, ...data } = req.body;
+
+    data.name = data.name.toUpperCase();
+    data.user = req.user._id;
+
+    const category = await Categories.findByIdAndUpdate(id, data, { new: true });
+
+    res.json({
+        message: 'La categoría se actualizo con exito',
+        category,
+    })
+
+}
+
+const deleteCategory = async (req, res = response) => {
+
+    const { id } = req.params;
+
+    const category = await Categories.findByIdAndUpdate(id, { status: false }, { new: true });
+
+    res.json({
+        message: 'La categoría se elimino con exito',
+        category,
+    });
 
 }
 
@@ -62,4 +88,6 @@ module.exports = {
     getCategories,
     getCategory,
     createCategory,
+    updateCategory,
+    deleteCategory,
 }
