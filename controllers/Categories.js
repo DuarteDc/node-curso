@@ -44,7 +44,7 @@ const createCategory = async (req, res = response) => {
         user: req.user._id,
     }
 
-    category = await Categories(data);
+    category = new Categories(data);
     await category.save();
 
     res.status(201).json({

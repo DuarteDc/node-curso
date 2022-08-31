@@ -23,6 +23,7 @@ const UserSchema = Schema({
     rol: {
         type: String,
         required: true,
+        default: 'user',
     },
     status: {
         type: Boolean,
