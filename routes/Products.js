@@ -1,8 +1,9 @@
 const { Router } = require('express');
+const { check } = require('express-validator');
 
 const { validateJWT, validator } = require('../middlewares')
-const { createProduct, getProducts } = require('../controllers/Products');
-const { check } = require('express-validator');
+const { createProduct, getProducts, getProduct, updateProduct, deleteProduct } = require('../controllers/Products');
+const { isProductIdValid } = require('../helpers/dbValidator');
 
 const router = Router();
 
@@ -10,7 +11,11 @@ router
 
     .get('/', getProducts)
 
-    .get('/:id',)
+    .get('/:id', [
+        check('id', 'El id no es valido').isMongoId(),
+        check('id').custom(isProductIdValid),
+        validator,
+    ], getProduct)
 
     .post('/', [
         validateJWT,
@@ -19,9 +24,19 @@ router
         validator,
     ], createProduct)
 
-    .put('/:id')
+    .put('/:id', [
+        validateJWT,
+        check('id', 'El id no es valido').isMongoId(),
+        check('id').custom(isProductIdValid),
+        validator,
+    ], updateProduct)
 
-    .delete('/:id')
+    .delete('/:id', [
+        validateJWT,
+        check('id', 'El id no es valido').isMongoId(),
+        check('id').custom(isProductIdValid),
+        validator,
+    ], deleteProduct);
 
 
 module.exports = router;
