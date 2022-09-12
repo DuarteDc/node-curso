@@ -22,7 +22,15 @@ const isCategoryIdValid = async (_id) => {
 
 const isProductIdValid = async (_id) => {
     const product = await Products.findById(_id);
-    if(!product) throw new Error('El producto no existe');
+    if (!product) throw new Error('El producto no existe');
+}
+
+const validateCollection = (collection = '', collections = []) => {
+    const isValid = collections.includes(collection);
+    if (!isValid)
+        throw new Error(`La colección ${collection} no es permitida - ${collections}`);
+        
+    return true;
 }
 
 module.exports = {
@@ -30,5 +38,6 @@ module.exports = {
     existEmail,
     existUser,
     isCategoryIdValid,
-    isProductIdValid
+    isProductIdValid,
+    validateCollection,
 }

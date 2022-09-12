@@ -24,6 +24,9 @@ const ProductSchema = Schema({
         ref: 'Categorie',
         required: true,
     },
+    image: {
+        type: String,
+    },
     description: {
         type: String,
         required: true,
@@ -36,7 +39,7 @@ const ProductSchema = Schema({
 });
 
 ProductSchema.methods.toJSON = function () {
-    const { __v,...user } = this.toObject();
+    const { __v, ...user } = this.toObject();
     return user;
 }
 
